@@ -1,0 +1,73 @@
+.progress-bar {
+    display: flex;
+    position: relative;
+    flex: 1;
+    border-radius: 5px;
+    margin: 0 5px;
+    width: 62px;
+    height: 1px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.progress-bar-knob {
+    position: absolute;
+    height: 7px;
+    width: 7px;
+    border: 1.5px solid black;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.bar {
+    user-select: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.bar-time {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 14px;
+}
+
+.episode-title {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.episode-duration {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 19px;
+}
+
+.episode-visiblity {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 19px;
+}
+
+.episode-published {
+font-family: "Open Sans";
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 19px;
+}
+
+.progress-bar { 
+    overflow: unset !important;
+}

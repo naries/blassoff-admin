@@ -1,0 +1,10 @@
+.pod-dialog-close {
+  position: absolute;
+  right: 29px;
+  top: 37px;
+}
+
+.pod-dialog-content{
+    min-height: 100px;
+    background: #E5E5E5;
+}

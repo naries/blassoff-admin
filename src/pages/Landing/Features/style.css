@@ -1,0 +1,96 @@
+.features-container {
+  padding: 7rem 0 6rem 0;
+  background-position: left 0px top 270%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.features-container .features-container--title {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 125%;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.features-container .features-container--description {
+  font-family: CenturyGothic;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.8);
+  margin-top: 3rem;
+  margin-bottom: 3em;
+  display: flex;
+  justify-content: center;
+}
+.features-container .features-container--description .txt {
+  max-width: 809px;
+}
+.feature-card-container {
+  display: grid;
+  gap: 2rem;
+  justify-content: center;
+}
+.features-container .features-container--card {
+  background: #ffffff;
+  border: 1px solid #f1f4f8;
+  box-sizing: border-box;
+  box-shadow: 0px 5px 25px 5px rgba(0, 0, 0, 0.06);
+  border-radius: 30px;
+  height: 410.22px;
+  width: 325.55px;
+  min-width: 325.55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.features-container .features-container--card .features-container--cardTitle {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 22px;
+  text-align: center;
+  color: #161c2d;
+  margin: 2rem;
+}
+
+.features-container .features-container--card .features-container--cardContent {
+  font-family: CenturyGothic;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.9);
+  padding: 0 2rem;
+}
+
+@media screen and (max-width: 3840px) {
+  .features-container {
+    background-position: left 0px top 180%;
+  }
+}
+
+@media (min-width: 768px) {
+  .features-container {
+    background-image: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .features-container {
+    background-image: url("../../../assets/landing/assets/images/features-bg.svg");
+
+  }
+  .feature-card-container{
+    grid-template-columns: repeat(3, 325.55px);
+}
+}

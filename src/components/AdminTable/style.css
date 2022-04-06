@@ -1,0 +1,27 @@
+.decorated {
+    color: white;
+    font-weight: 700;
+    padding: 6px;
+    text-align: center;
+    border-radius: 4px;
+}
+.decorated--pending {
+    background-color: #FB8832;
+}
+
+.decorated--active {
+    background-color: #4AAF05;
+}
+
+.decorated--suspended {
+    background-color: #FF5756;
+}
+
+.actionIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.long-text {
+    white-space: pre-wrap!important;
+}

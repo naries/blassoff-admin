@@ -1,0 +1,71 @@
+.comments-container {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.comments-container .comments--title {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  color: #000000;
+}
+
+.comments-container .comments--sub-title {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000000;
+}
+
+.comments-container .comments--list {
+  margin-top: 2rem;
+}
+
+.comments-container .comments--list-item {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #EAEAEA;
+}
+
+.comments-container .comments--list-item:last-child {
+  margin-bottom: 0;
+}
+
+.comments-container .comment--content {
+}
+
+.comments-container .comment--content-time {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 10px;
+  line-height: 13px;
+  color: #000000;
+}
+
+.comments-container .comment-txt {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 10px;
+  line-height: 13px;
+  color: rgba(0, 0, 0, 0.8);
+  margin-top: 0.5rem;
+}
+
+.comments-container .comments--view-more {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  color: #f9c001;
+  margin-top: 1rem;
+}

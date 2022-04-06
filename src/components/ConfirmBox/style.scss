@@ -1,0 +1,28 @@
+.action-btns {
+    border-top: solid 1px #000000;
+    display: flex;
+    border-collapse: collapse;
+  
+    & .left,
+    & .right {
+      width: 50%;
+      border-right: solid 1px #000000;;
+      padding: 1rem;
+      text-align: center;
+  
+      & button {
+        border: none;
+        outline: none;
+        background: none;
+        font-weight: bold;
+      }
+    }
+  
+    & .left {
+      border-right: solid 1px #000000;;
+    }
+  
+    & .right {
+      border-left: solid 1px #000000;;
+    }
+  }

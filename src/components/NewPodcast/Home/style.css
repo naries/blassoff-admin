@@ -1,0 +1,39 @@
+.podcast-record-form {
+  width: 25rem;
+}
+
+.new-pod-container {
+  min-height: 75vh;
+  overflow: scroll;
+}
+
+.soundwave {
+  width: 100%;
+  height: 267px;
+  background: #f9f9f9;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.soundwave-stopped {
+  background: #f25465;
+}
+
+.pause-btn, .preview-btn {
+  width: 131px;
+  height: 41px;
+  left: 579px;
+  top: 645px;
+  background: #ffc423;
+  border-radius: 48px;
+  border: none;
+}
+.resume-btn  {
+  width: 131px;
+  height: 41px;
+  border: 2px solid #273543;
+  box-sizing: border-box;
+  border-radius: 48px;
+}

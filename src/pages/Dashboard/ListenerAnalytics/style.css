@@ -1,0 +1,23 @@
+.listener-activities-title {
+  font-family: MTN Brighter Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 23px;
+  display: flex;
+  align-items: center;
+  color: #000000;
+}
+
+.listener-activities-date-range-picker {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.listener-activities-date-range-picker input {
+  width: 237px;
+  height: 35px;
+  background: #FFFFFF;
+  border: 0.6px solid rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}

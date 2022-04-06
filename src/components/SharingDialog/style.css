@@ -1,0 +1,19 @@
+.share-link {
+  fill: white;
+  fill-opacity: 0;
+  stroke: black;
+  stroke-width: 3px;
+  transition: stroke-opacity 1s, stroke-width 1s, transform 1s;
+  transform-origin: 50% 50%;
+  cursor: pointer;
+}
+
+.share-link:hover {
+  stroke-opacity: 0;
+  stroke-width: 0;
+  transform: scale(1.2);
+}
+
+.text-13{
+  font-size: 13 !important;
+}

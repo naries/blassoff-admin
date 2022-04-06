@@ -1,0 +1,76 @@
+.select-action {
+    position: relative;
+    width: 103.6px;
+    height: 30px;
+    background: #F2F2F2;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.select-label {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 14px;
+}
+
+.item-container {
+    position: absolute;
+    z-index: 1
+}
+
+.item {
+    width: 200px;
+    color: white;
+    background: #273543;
+    height: 33px;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF
+}
+
+.item:hover {
+    background: #262D35;
+}
+
+.badge-light {
+    color: #212529;
+    background-color: #ECECEC !important;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.badge-success {
+    color: #212529 !important;
+    background-color: #8DEFB6 !important;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.badge-primary {
+    color: #212529 !important;
+    background-color: #C5EFFD !important;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.badge-pill {
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+    border-radius: 10rem !important;
+}
