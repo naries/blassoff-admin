@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import {
   Modal,
@@ -10,88 +10,29 @@ import {
   Alert,
   Spinner,
 } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import makeAnimated from "react-select/animated";
 import { removeDuplicates } from "../../modules/removeArrDuplicates";
-import { getrole, getroleDetails } from "../../store/roles";
-import { getOneUser, getUsers, resetEdit, update } from "../../store/users";
+import { getCustomers, resetCustomerBySearch, resetEdit } from "../../store/customers";
 
 
 const animatedComponents = makeAnimated();
 
-export default function EditUser({ showEdit, setShowEdit, load, editPayload, popRoleAdd, progressValue, setProgressValue }) {
+export default function EditCustomer({ showEdit, setShowEdit, editPayload }) {
+  const customerData = useSelector(getCustomers);  
+  const { updating, updateSuccess, updateFailed } = customerData;
+  
   const [values, setValue] = useState();
-
-  const allRoles = useSelector(getroleDetails);
-  const users = useSelector(getUsers);
-  const [roles, setRoles] = useState([]);
-
   //success and failure
-  const [addSuccess, setAddSuccess] = useState(false);
-  const [addFailure, setAddFailure] = useState(false);
+  const [success, setAddSuccess] = useState(false);
+  const [failure, setAddFailure] = useState(false);
   const [errors, setErrors] = useState();
 
 
   const dispatch = useDispatch();
-  const { updating, updateSuccess, updateFailed, fetchOneData } = users;
-
-  // get all roles
-  const getAllRoles = () => {
-    dispatch(getrole());
-  }
-
-  // get all users
-  const getuserFn = d => {
-    dispatch(getOneUser(d));
-  }
-
-  // reset update 
-  const reset = () => {
-    dispatch(resetEdit())
-  }
-
-  // load roles on page load
-  useEffect(() => {
-    getAllRoles();
-  }, [])
 
   // fetch user with id provided
   useEffect(() => {
-    getuserFn(editPayload)
-    reset()
   }, [editPayload])
-  
-  // reconstruct values when edit data and roles are loaded
-  useEffect(() => {
-    if(progressValue) {
-      setValue(progressValue)
-      return;
-    }
-    if (fetchOneData && allRoles) {
-      let rolesx = fetchOneData?.userRoles.map(d => roles.filter(f => d === f.role_Id));
-      setValue({ ...fetchOneData, roles: rolesx[0] })
-    }
-  }, [fetchOneData, allRoles, progressValue])
-
-  // reorganize roles when loaded
-  useEffect(() => {
-    if (allRoles?.data?.length) {
-      let filteredroles = removeDuplicates(
-        allRoles?.data,
-        "roleName"
-      );
-
-      const roles = filteredroles.map((r) => {
-        return {
-          label: r?.roleName,
-          value: r?.id,
-          role_Id: r?.id,
-        };
-      });
-
-      setRoles(roles);
-    }
-  }, [allRoles?.data]);
 
   // after update, show if successful or failed
   useEffect(() => {
@@ -116,17 +57,11 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
   };
 
   const handleCreate = () => {
-    const rolesToSubmit = values?.roles
-      .map(r => r?.value)
-
-    delete values.roles
-    console.log('HERE');
-
-    dispatch(
-      update({
-        data: { ...values, roles: rolesToSubmit },
-      })
-    );
+    // dispatch(
+    //   update({
+    //     data: { ...values },
+    //   })
+    // );
   };
 
   // validate input
@@ -147,23 +82,14 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
       return false;
     }
 
-    if (!values?.roles) {
-      setErrors({
-        ...errors,
-        roles: "Please select at least one role",
-      });
-      return false;
-    }
-
     return true;
   };
 
   // function to execute when modal is closed.
   const closeModal = () => {
     setShowEdit(false);
-    setProgressValue(null);
-    load();
-    reset();
+    resetEdit();
+    resetCustomerBySearch();
   };
 
 
@@ -173,19 +99,19 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
       onHide={() => {
         closeModal();
       }}
-      size={addSuccess || addFailure ? "md" : "lg"}
+      size={success || failure ? "md" : "lg"}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header closeButton className="modal-header" style={{ backgroundColor: '#fff', color: 'Black', fontSize: '24px!important' }}>
         <Modal.Title id="contained-modal-title-vcenter">
-          <Container>Edit User</Container>
+          <Container>Edit Customer</Container>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {addSuccess ? (
+        {success ? (
           <>
-            <Alert show={addSuccess} variant="success">
+            <Alert show={success} variant="success">
               <Alert.Heading>SUCCESS</Alert.Heading>
               <p>successfull</p>
             </Alert>
@@ -262,41 +188,6 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
                             {errors?.location && (
                               <div className="text-danger px-3">
                                 {errors?.location}
-                              </div>
-                            )}
-                          </div>
-                        </Col>
-                        <Col xs={12}>
-                          <div className="form-group">
-                            <label className="pod-label">Roles</label>
-                            <Select
-                              closeMenuOnSelect={false}
-                              components={animatedComponents}
-                              isMulti
-                              options={roles}
-                              defaultValue={values?.roles}
-                              value={values?.roles}
-                              onChange={(value) => {
-                                setValue({
-                                  ...values,
-                                  roles: value,
-                                });
-                              }}
-                            />
-
-                            <div className="text-right">
-                              <Button className="mt-2 btn btn-sm" variant="secondary" onClick={() => {
-                                setProgressValue(values);
-                                popRoleAdd()
-                              }}>
-                                <span className="button-label">
-                                  + Create Role
-                                </span>
-                              </Button>
-                            </div>
-                            {errors?.roles && (
-                              <div className="text-danger px-3">
-                                {errors?.roles}
                               </div>
                             )}
                           </div>

@@ -12,6 +12,9 @@ const getBaseUrl = (reqType) => {
     case "role":
       baseURL += 'roles/'
       break;
+    case "customer":
+      baseURL += 'customer/'
+      break;
     default:
       baseURL = 'user/';
       break;

@@ -13,7 +13,7 @@ export const ConfirmBox = ({
 }) => {
 
   useEffect(() => {
-    if (hideConfirm) {
+    if (hideConfirm && onConfirm) {
       onConfirm();
     }
   }, [hideConfirm])
