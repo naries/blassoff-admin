@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
-import Logo from "../../assets/svg/Audapp-admin-logo.svg";
+// import Logo from "../../assets/svg/admin-logo.svg";
+import AdminLogo from '../../assets/img/admin-logo.png'
 import LogoSmall from "../../assets/img/audapp-logo-small.svg";
 import Avatar from "../../assets/img/avatar.jpeg";
 import HamburgerWhite from "../../assets/svg/hamburger-white.svg";
@@ -49,10 +50,10 @@ export const Header = () => {
         <NavLink to="/dashboard" className="logo">
           <div style={{ display: 'flex' }}>
             <div>
-              <img src={Logo} alt="Logo" />
+              <img src={AdminLogo} alt="Logo" />
             </div>
-            <div className="ml-4">
-              <div>Audapp</div>
+            <div className="text-left ml-4">
+              <div>Blast Off</div>
               <div style={{ fontWeight: 400 }}>Admin Portal</div>
             </div>
           </div>

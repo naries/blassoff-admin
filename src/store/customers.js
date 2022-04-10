@@ -100,9 +100,9 @@ const slice = createSlice({
     },
     //get err
     fetchCustomersError: (customer) => {
-      customer.loadingBySearch = false;
-      customer.fetchBySearchFailed = true;
-      customer.fetchBySearchData = null;
+      customer.loading = false;
+      customer.fetchFailed = true;
+      customer.fetchData = null;
     },
     fetchCustomerBySearchLoading: (customer) => {
       customer.loadingBySearch = true;
@@ -251,19 +251,33 @@ const {
 // };
 
 
-// export const getCustomer = (value) => (dispatch) => {
-//   let url = `getcustomers`
-//   dispatch(
-//     apiCallBegan({
-//       url,
-//       method: "get",
-//       type: "customer",
-//       onStart:  fetchCustomersLoading.type,
-//       onSuccess:  fetchCustomersSuccess.type,
-//       onError:  fetchCustomersError.type,
-//     })
-//   );
-// };
+export const getCustomer = (value) => (dispatch) => {
+  let url = `getcustomers?searchKey=${value.search}&limit=${value.limit}&offset=${value.offset}`
+  dispatch(
+    apiCallBegan({
+      url,
+      method: "get",
+      type: "customer",
+      onStart:  fetchCustomersLoading.type,
+      onSuccess:  fetchCustomersSuccess.type,
+      onError:  fetchCustomersError.type,
+    })
+  );
+};
+
+export const getOneCustomer = (value) => (dispatch) => {
+  let url = `?id=${value.id}`
+  dispatch(
+    apiCallBegan({
+      url,
+      method: "get",
+      type: "customer",
+      onStart:  fetchOneCustomerLoading.type,
+      onSuccess:  fetchOneCustomerSuccess.type,
+      onError:  fetchOneCustomerError.type,
+    })
+  );
+};
 
 export const getCustomerBySearch = (value) => (dispatch) => {
   let url = `?searchkey=${value}`
@@ -308,20 +322,20 @@ export const getCustomerBySearch = (value) => (dispatch) => {
 //   );
 // };
 
-// export const update = (value) => (dispatch) => {
-//   let url = "";
-//   dispatch(
-//     apiCallBegan({
-//       url,
-//       method: "put",
-//       type: "customer",
-//       data: value.data,
-//       onStart:  updateCustomerStatusLoading.type,
-//       onSuccess:  updateCustomerStatusSuccess.type,
-//       onError:  updateCustomerStatusError.type,
-//     })
-//   );
-// };
+export const update = (value) => (dispatch) => {
+  let url = "saveCustomers";
+  dispatch(
+    apiCallBegan({
+      url,
+      method: "post",
+      type: "customer",
+      data: value.data,
+      onStart:  updateCustomerStatusLoading.type,
+      onSuccess:  updateCustomerStatusSuccess.type,
+      onError:  updateCustomerStatusError.type,
+    })
+  );
+};
 
 // export const changePwd = (value) => (dispatch) => {
 //   let url = "resetpassword";

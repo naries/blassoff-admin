@@ -8,6 +8,7 @@ import moment from "moment";
 import AddUser from "./Add";
 import EditUser from "./Edit";
 import { deactivate, getUser, getUsers, resetCreation, resetActivateDeactivate, resetOneUser, resetPassword } from "../../store/users";
+import customers, { getCustomer, getCustomerBySearch, getCustomers, resetCustomerBySearch, resetData } from "../../store/customers"
 import UpdatePassword from "./UpdatePassword";
 import AddRole from "./AddRole";
 
@@ -16,7 +17,12 @@ const allProps = [
   {
     name: 'Username',
     type: 'text',
-    prop: 'username'
+    prop: 'userName'
+  },
+  {
+    name: 'Name',
+    type: 'concat',
+    nests: ['firstName', 'lastName']
   },
   {
     name: 'Email',
@@ -24,19 +30,24 @@ const allProps = [
     prop: 'email'
   },
   {
-    name: 'Phone Number',
-    type: 'text',
-    prop: 'phoneNumber',
+    name: 'Balance',
+    type: 'concat',
+    nests: ['cashSymbol', 'cashBalance'],
   },
   {
-    name: 'Location',
+    name: 'Coin',
     type: 'text',
-    prop: 'location'
+    prop: 'coin',
+  },
+  {
+    name: 'gem',
+    type: 'text',
+    prop: 'currentGems',
   },
 ]
 
-const Users = () => {
-  const usersData = useSelector(getUsers);
+const Customers = () => {
+  const customersData = useSelector(getCustomers);
   const [showAdd, setShowAdd] = useState(false);
   const [showAddRole, setShowAddRole] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -50,12 +61,19 @@ const Users = () => {
   const [itemToDelete, setItemToDelete] = useState();
   const [search, setSearch] = useState("");
 
-  const { loading, fetchData, changing, changeSuccess, changeFailed } = usersData;
+  const { loading, fetchData, changing, changeSuccess, changeFailed } = customersData;
+  console.log(customersData);
 
   const dispatch = useDispatch();
 
-  const load = (rows = 50, offset = 0) => {
-    dispatch(getUser());
+  const load = (limit = 10, offset = 0) => {
+    if (search) {
+      dispatch(getCustomer({
+        limit,
+        offset,
+        search
+      }));
+    }
   };
 
   const handleConfirm = () => {
@@ -67,12 +85,8 @@ const Users = () => {
     );
   }
 
-  console.log(showAddRole);
-
   const resetAll = () => {
-    dispatch(resetCreation())
-    dispatch(resetOneUser())
-    dispatch(resetPassword())
+    dispatch(resetData())
   }
 
   const _openShowAddRole = () => {
@@ -103,8 +117,11 @@ const Users = () => {
 
   useEffect(() => {
     resetAll()
-    dispatch(resetActivateDeactivate())
   }, [])
+
+  useEffect(() => {
+    load();
+  }, [search])
 
   useEffect(() => {
     if (changeSuccess || changeFailed) {
@@ -118,14 +135,14 @@ const Users = () => {
 
   // actions on table
   const actions = [
-    {
-      name: 'Change Password',
-      type: 'text',
-      fn: d => {
-        setEditPayload(d)
-        setShowChangePw(true)
-      }
-    },
+    // {
+    //   name: 'Change Password',
+    //   type: 'text',
+    //   fn: d => {
+    //     setEditPayload(d)
+    //     setShowChangePw(true)
+    //   }
+    // },
     {
       name: 'Edit',
       type: 'text',
@@ -134,40 +151,40 @@ const Users = () => {
         setShowEdit(true)
       }
     },
-    {
-      type: 'status',
-      prop: 'isActive',
-      trueValue: 'Deactivate',
-      falseValue: 'Activate',
-      fn: d => {
-        setItemToDelete(d)
-        setConfirmDelete(true)
-      }
-    }
+    // {
+    //   type: 'status',
+    //   prop: 'isActive',
+    //   trueValue: 'Deactivate',
+    //   falseValue: 'Activate',
+    //   fn: d => {
+    //     setItemToDelete(d)
+    //     setConfirmDelete(true)
+    //   }
+    // }
   ]
-  console.log(progressValue);
-  let addButton = <Button variant="dark" style={{ borderRadius: 100, padding: '5px 20px'}} onClick={() => setShowAdd(true)}>
+
+  let addButton = <Button className="btn btn-dark" style={{ borderRadius: 100, padding: '5px 20px'}} onClick={() => setShowAdd(true)}>
     <span className="button-label" style={{ color: 'white' }}>ADD NEW &nbsp; +</span>
   </Button>
 
   return (
     <div className="p-4">
       <div className="d-flex justify-content-between align-items-center py-4">
-        <span className="page-title">Users</span>
+        <span className="page-title">Customers</span>
       </div>
       <Table
-        noDisplay
         noSelect
         disableDownload
-        extraHeaders={addButton}
-        selector={usersData}
+        // extraHeaders={addButton}
+        selector={customersData}
         load={load}
         loading={loading}
         allProps={allProps}
         actions={actions}
-        pick={usersData?.fetchData}
-        tableName="Users"
-        totalCounts={fetchData?.totalCounts || fetchData?.length}
+        pick={customersData?.fetchData?.model}
+        tableName="Customers"
+        isSearchable
+        totalCounts={fetchData?.totalCount || fetchData?.model?.length}
         searchString={search}
         setSearchString={setSearch}
       />
@@ -207,10 +224,7 @@ const Users = () => {
         <EditUser
           showEdit={showEdit}
           setShowEdit={setShowEdit}
-          popRoleAdd={_openShowAddRole}
           editPayload={editPayload}
-          progressValue={progressValue}
-          setProgressValue={setProgressValue}
           load={load}
         />
       )}
@@ -230,4 +244,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Customers

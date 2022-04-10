@@ -88,9 +88,11 @@ export const MainTable = ({
                                         if (p.type === 'text' || p.type === "longText") {
                                             return <td key={i} className={p.type === "longText" ? "long-text" : ""}>{p.prepend || ""} {d[p?.prop]} {p.append || ""}</td>
                                         }
+
                                         if (p.type === 'boolean') {
                                             return <td key={i}>{p.prepend || ""} {d[p?.prop] ? p?.trueValue : p?.falseValue} {p.append || ""}</td>
                                         }
+
                                         if (p.type === 'array') {
                                             return <td key={i}>{d[p?.prop]?.map(x => (<div className="p-2">
                                                 {x[p.nestName]}
@@ -98,10 +100,10 @@ export const MainTable = ({
                                         }
 
                                         if (p.type === "concat") {
+                                            if (!p.props) return <td key={i}>{p.nests.map(n => `${d[n] ? d[n] : d[n] === 0 ? "0": ""} `)}</td>
                                             if (p.nests) {
-                                                return <td>{p.nests.map(n => `${d[p?.prop][n]} `)}</td>
+                                                return <td key={i}>{p.nests.map(n => `${d[p?.prop][n] ? d[p?.prop][n] : ""} `)}</td>
                                             }
-                                            return <td>{p.nests.map(n => `${d[n]} `)}</td>
                                         }
 
                                         if (p.type === 'date') {
@@ -154,7 +156,7 @@ export const MainTable = ({
                                                         })
                                                     }
                                                     if (a.type === 'check') {
-                                                        return a?.show && <span className="dropdown-item py-2" onClick={() => a.fn(d)}>{d[a.prop][a.main] ? a?.falseValue : a?.trueValue}</span>
+                                                        return a?.show && <span key={i} className="dropdown-item py-2" onClick={() => a.fn(d)}>{d[a.prop][a.main] ? a?.falseValue : a?.trueValue}</span>
                                                     }
                                                 })}
                                             </div>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { createRadio, getRadios, resetData } from "../../store/radio";
 import Select from "react-select";
+import { getPodCasts } from "../../store/podcast";
 import {
   Modal,
   Button,
@@ -13,68 +15,49 @@ import {
 import { useSelector } from "react-redux";
 import makeAnimated from "react-select/animated";
 import { removeDuplicates } from "../../modules/removeArrDuplicates";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getrole, getroleDetails } from "../../store/roles";
-import { getOneUser, getUsers, resetEdit, update } from "../../store/users";
+import { createUsers, getUsers, resetCreation } from "../../store/users";
 
 
 const animatedComponents = makeAnimated();
 
-export default function EditUser({ showEdit, setShowEdit, load, editPayload, popRoleAdd, progressValue, setProgressValue }) {
+export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progressValue, setProgressValue }) {
   const [values, setValue] = useState();
 
   const allRoles = useSelector(getroleDetails);
   const users = useSelector(getUsers);
   const [roles, setRoles] = useState([]);
 
-  //success and failure
+  //succes and failure
   const [addSuccess, setAddSuccess] = useState(false);
   const [addFailure, setAddFailure] = useState(false);
   const [errors, setErrors] = useState();
+  const [type, setType] = useState(false);
 
 
   const dispatch = useDispatch();
-  const { updating, updateSuccess, updateFailed, fetchOneData } = users;
+  const { creating, createData, createFailed } = users;
 
-  // get all roles
   const getAllRoles = () => {
     dispatch(getrole());
   }
 
-  // get all users
-  const getuserFn = d => {
-    dispatch(getOneUser(d));
-  }
-
-  // reset update 
   const reset = () => {
-    dispatch(resetEdit())
+    dispatch(resetCreation())
   }
 
-  // load roles on page load
   useEffect(() => {
-    getAllRoles();
+    getAllRoles()
+    reset()
   }, [])
 
-  // fetch user with id provided
   useEffect(() => {
-    getuserFn(editPayload)
-    reset()
-  }, [editPayload])
-  
-  // reconstruct values when edit data and roles are loaded
-  useEffect(() => {
-    if(progressValue) {
-      setValue(progressValue)
-      return;
-    }
-    if (fetchOneData && allRoles) {
-      let rolesx = fetchOneData?.userRoles.map(d => roles.filter(f => d.id === f.role_Id)[0]);
-      console.log(rolesx);
-      setValue({ ...fetchOneData, roles: rolesx })
-    }
-  }, [fetchOneData, allRoles, progressValue])
+    if (progressValue) setValue(progressValue);
+  }, [progressValue])
 
-  // reorganize roles when loaded
+
   useEffect(() => {
     if (allRoles?.data?.length) {
       let filteredroles = removeDuplicates(
@@ -94,53 +77,62 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
     }
   }, [allRoles?.data]);
 
-  // after update, show if successful or failed
   useEffect(() => {
-    if (updateSuccess) {
+    if (createData) {
+      //handle success here
       setAddSuccess(true);
     }
-    if (updateFailed) {
+    if (createFailed) {
       setAddFailure(true);
     }
-  }, [updateSuccess, updateFailed]);
+  }, [createData, createFailed]);
 
-  // update value of input
-  const handleValue = e => {
+  const handleValue = (e) => {
     setErrors();
+    dispatch(resetData());
     setValue({ ...values, [e.target.name]: e.target.value });
   };
 
-  // function executed on submit
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (validateInput()) handleCreate();
   };
 
   const handleCreate = () => {
-    const rolesToSubmit = values?.roles
+    const rolesToSubmit = values?.role_Id
       .map(r => r?.value)
 
-    delete values.roles
-    console.log('HERE');
+    delete values.role_Id
 
     dispatch(
-      update({
+      createUsers({
         data: { ...values, roles: rolesToSubmit },
       })
     );
   };
 
-  // validate input
   const validateInput = () => {
+    dispatch(resetData());
 
     if (!values?.email) {
       setErrors({ ...errors, email: "Please enter an email address" });
       return false;
     }
 
-    if (!values?.phoneNumber) {
-      setErrors({ ...errors, phoneNumber: "Please enter a phone number" });
+    if (!values?.phonenumber) {
+      setErrors({ ...errors, phonenumber: "Please enter a phone number" });
       return false;
+    }
+
+    if (!values?.password) {
+      setErrors({ ...errors, password: "Enter a password" });
+      return false;
+    } else {
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(values?.password)) {
+        setErrors({ ...errors, password: "Password must contain at least 1 uppercase, 1 special character and a special character" })
+        return false;
+      }
     }
 
     if (!values?.location) {
@@ -148,10 +140,10 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
       return false;
     }
 
-    if (!values?.roles) {
+    if (!values?.role_Id) {
       setErrors({
         ...errors,
-        roles: "Please select at least one role",
+        role_id: "Please select at least one role",
       });
       return false;
     }
@@ -159,28 +151,27 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
     return true;
   };
 
-  // function to execute when modal is closed.
   const closeModal = () => {
-    setShowEdit(false);
+    setShowAdd(false);
     setProgressValue(null);
     load();
-    reset();
+    dispatch(resetData());
   };
 
 
   return (
     <Modal
-      show={showEdit}
+      show={showAdd}
       onHide={() => {
         closeModal();
       }}
-      size={addSuccess || addFailure ? "md" : "lg"}
+      size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header closeButton className="modal-header" style={{ backgroundColor: '#fff', color: 'Black', fontSize: '24px!important' }}>
         <Modal.Title id="contained-modal-title-vcenter">
-          <Container>Edit User</Container>
+          <Container>Create User</Container>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -207,8 +198,8 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
               <Container>
                 <Row>
                   <Col xs={12}>
-                    {updateFailed && (
-                      <Alert variant="danger">{updateFailed}</Alert>
+                    {createFailed && (
+                      <Alert variant="danger">{createFailed}</Alert>
                     )}
                     <form onSubmit={handleSubmit}>
                       <Row>
@@ -234,21 +225,54 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
                           <div className="form-group">
                             <label className="pod-label">Phone Number</label>
                             <input
-                              name="phoneNumber"
+                              name="phonenumber"
                               type="text"
                               className="form-control pod-input"
                               placeholder="Phone Number"
                               onChange={(e) => handleValue(e)}
-                              value={values?.phoneNumber}
+                              value={values?.phonenumber}
                             />
-                            {errors?.phoneNumber && (
+                            {errors?.phonenumber && (
                               <div className="text-danger px-3">
-                                {errors?.phoneNumber}
+                                {errors?.phonenumber}
                               </div>
                             )}
                           </div>
                         </Col>
 
+                        <Col xs={12}>
+                          <div className="form-group">
+                            <label className="pod-label">Password</label>
+                            <div style={{ position: "relative" }}>
+                              <input
+                                name="password"
+                                type={!type ? "password" : "text"}
+                                className="form-control pod-input"
+                                placeholder="password"
+                                onChange={(e) => handleValue(e)}
+                                value={values?.password}
+                                required
+                              />
+                              <FontAwesomeIcon
+                                icon={!type ? faEye : faEyeSlash}
+                                size="sm"
+                                style={{
+                                  position: "absolute",
+                                  top: 15,
+                                  right: 10,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => setType(!type)}
+                              />
+                            </div>
+                            {errors?.password && (
+                              <div className="text-danger px-3">
+                                {errors?.password}
+                              </div>
+                            )}
+                          </div>
+
+                        </Col>
                         <Col xs={12}>
                           <div className="form-group">
                             <label className="pod-label">Location</label>
@@ -275,18 +299,23 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
                               components={animatedComponents}
                               isMulti
                               options={roles}
-                              defaultValue={values?.roles}
-                              value={values?.roles}
+                              defaultValue={values?.role_Id}
+                              value={values?.role_Id}
                               onChange={(value) => {
                                 setValue({
                                   ...values,
-                                  roles: value,
+                                  role_Id: value,
                                 });
                               }}
                             />
 
+                            {errors?.role_Id && (
+                              <div className="text-danger px-3">
+                                {errors?.role_Id}
+                              </div>
+                            )}
                             <div className="text-right">
-                              <Button variant="link" onClick={() => {
+                              <Button className="mt-2 btn btn-sm" variant="secondary" onClick={() => {
                                 setProgressValue(values);
                                 popRoleAdd()
                               }}>
@@ -295,21 +324,17 @@ export default function EditUser({ showEdit, setShowEdit, load, editPayload, pop
                                 </span>
                               </Button>
                             </div>
-                            {errors?.roles && (
-                              <div className="text-danger px-3">
-                                {errors?.roles}
-                              </div>
-                            )}
+
                           </div>
                         </Col>
                       </Row>
                       <div className="d-flex justify-content-end mt-4">
-                        <Button variant="dark" type="submit">
+                        <Button variant="primary" type="submit">
                           <span className="button-label">
-                            {updating ? (
+                            {creating ? (
                               <Spinner variant="secondary" />
                             ) : (
-                              "Update"
+                              "Save"
                             )}
                           </span>
                         </Button>

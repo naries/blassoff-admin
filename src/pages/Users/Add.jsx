@@ -315,7 +315,7 @@ export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progres
                               </div>
                             )}
                             <div className="text-right">
-                              <Button className="mt-2 btn btn-sm" variant="secondary" onClick={() => {
+                              <Button className="btn btn-small" variant="link" onClick={() => {
                                 setProgressValue(values);
                                 popRoleAdd()
                               }}>
@@ -329,7 +329,7 @@ export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progres
                         </Col>
                       </Row>
                       <div className="d-flex justify-content-end mt-4">
-                        <Button variant="primary" type="submit">
+                        <Button variant="dark" type="submit">
                           <span className="button-label">
                             {creating ? (
                               <Spinner variant="secondary" />

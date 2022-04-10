@@ -1888,7 +1888,7 @@ button.bg-danger:hover {
   width: 240px;
   z-index: 1;
   transition: all 0.2s ease-in-out;
-  background: #19769a;
+  background: #000;
 }
 
 .header .header-left .logo {
@@ -3408,7 +3408,7 @@ button.bg-danger:hover {
 -----------------------*/
 
 .sidebar {
-  background-color: #00678F;
+  /* background-color: #00678F; */
   top: 70px;
   left: 0;
   bottom: 0;
@@ -3431,7 +3431,7 @@ button.bg-danger:hover {
 }
 
 .sidebar-menu {
-  background: #00678F;
+  /* background: #00678F; */
   height: 90%;
   overflow-y: auto;
 }

@@ -100,6 +100,8 @@ export const Table = ({
         }
     }
 
+    // download
+
     const downloadAllFromFilter = () => {
         load(10000, 0, "download");
     }
@@ -213,7 +215,7 @@ export const Table = ({
                             </tfoot>
                         )}
                     </table>
-                    {!loading && pick?.length === 0 && (
+                    {!loading && (!pick || pick?.length) === 0 && (
                         <div className="d-flex justify-content-center m-2">No Record</div>
                     )}
                 </div>

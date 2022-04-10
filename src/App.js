@@ -34,7 +34,7 @@ import FlaggedEpisodes from "./pages/FlaggedEpisodes";
 import Comments from "./pages/Comments";
 import Listeners from "./pages/Listeners";
 import Users from "./pages/Users";
-import Customers from "./pages/Customers";
+import Customers from "./pages/Customer";
 
 function App() {
   return (

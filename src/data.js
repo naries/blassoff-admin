@@ -14,7 +14,6 @@ import Bell from './assets/svg/bell.svg'
 import FlagBlack from './assets/svg/flag-black.svg'
 import Comment from './assets/svg/comment.svg'
 import UserCheck from './assets/svg/user-check.svg'
-import Customers from "./pages/Customers";
 
 export const menu = [
   // {
@@ -54,7 +53,7 @@ export const menu = [
   // },
   {
     label: "Users",
-    icon: Users, // change Icon later
+    icon: UserCheck, // change Icon later
     route: "/users",
   },
   {
@@ -62,21 +61,21 @@ export const menu = [
     icon: UserCheck, // change Icon later
     route: "/customers",
   },
-  // {
-  //   label: "Account",
-  //   icon: Settings,
-  //   route: "/setting",
-  // },
-  // {
-  //   label: "Comments",
-  //   icon: Comment,
-  //   route: "/comments",
-  // },
-  // {
-  //   label: "Sections",
-  //   icon: Settings,
-  //   route: "/sections",
-  // },
+  {
+    label: "Payments",
+    icon: Episode,
+    route: "/payment",
+  },
+  {
+    label: "Contents",
+    icon: Comment,
+    route: "/contents",
+  },
+  {
+    label: "Notifications",
+    icon: Bell,
+    route: "/notifications",
+  },
   // {
   //   label: "Banners",
   //   icon: Settings,

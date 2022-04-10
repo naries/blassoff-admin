@@ -207,7 +207,7 @@ export default function UpdatePassword({ showChangePw, setShowChangePw, load, ed
                         </Col>
                       </Row>
                       <div className="d-flex justify-content-end mt-4">
-                        <Button variant="dark" type="submit">
+                        <Button variant="primary" type="submit">
                           <span className="button-label">
                             {changingPw ? (
                               <Spinner variant="secondary" />
