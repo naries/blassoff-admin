@@ -5,6 +5,9 @@ import Download from '../../assets/svg/download.svg'
 import { exportCSV } from '../../helpers/exportCSV';
 import moment from 'moment';
 
+let typingTimer;
+let displayTypingTimer;
+
 export const Table = ({
     extraHeaders,
     allProps,
@@ -22,7 +25,8 @@ export const Table = ({
     setSearchString,
     resetDownload,
     noDisplay,
-    noSelect
+    noSelect,
+    manual
 }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -103,7 +107,7 @@ export const Table = ({
     // download
 
     const downloadAllFromFilter = () => {
-        load(10000, 0, "download");
+        load && load(10000, 0, "download");
     }
 
     useEffect(() => {
@@ -123,8 +127,10 @@ export const Table = ({
     }
 
     useEffect(() => {
-        load(rowsPerPage, getOffSet(), "normal");
+        load && load(rowsPerPage, getOffSet(), "normal");
     }, [rowsPerPage, dateState, currentPage])
+
+
 
     return (
         <div className="py-4 content">
@@ -133,12 +139,17 @@ export const Table = ({
                     {!noDisplay && <>
                         <span>Display</span> &nbsp;&nbsp;
                         <input
-                            min={0}
+                            min={5}
                             type="number"
                             style={{ width: 50, padding: 6, borderRadius: 4 }}
-                            value={rowsPerPage}
+                            // value={rowsPerPage}
                             step={5}
-                            onChange={_setRowsPerPage}
+                            onChange={e => {
+                                clearTimeout(displayTypingTimer);
+                                displayTypingTimer = setTimeout(() => {
+                                    _setRowsPerPage(e)
+                                }, 2000)
+                            }}
                         /> &nbsp;&nbsp;
                     </>}
                     {extraHeaders}
@@ -148,8 +159,16 @@ export const Table = ({
                             className="ml-4"
                             style={{ minWidth: 200, padding: 6, borderRadius: 4 }}
                             placeholder="Search"
-                            value={searchString}
-                            onChange={e => setSearchString(e.target.value)}
+                            // value={}
+                            onKeyUp={e => {
+                                clearTimeout(typingTimer);
+                                typingTimer = setTimeout(() => {
+                                    console.log(e.target.value)
+                                    setSearchString(e.target.value)
+                                }, 2000)
+                            }}
+                        // onKeyDown={e => clearTimeout(typingTimer)}
+
                         />
                     </>}
                 </div>
@@ -173,7 +192,8 @@ export const Table = ({
                     <table className="table-responsiveness dashboard-pod-table table table-striped">
                         <MainTable
                             allProps={allProps}
-                            data={pick}
+                            data={manual ? pick.slice(rowsPerPage * (currentPage - 1) + 1, parseInt(rowsPerPage * (currentPage - 1)) +
+                                parseInt(totalCounts < rowsPerPage ? totalCounts : rowsPerPage)) : pick}
                             colSpan={allProps?.length + 2}
                             loading={loading}
                             currentPage={currentPage}
@@ -183,7 +203,7 @@ export const Table = ({
                             selectedRowsIndex={selectedRowsIndex}
                             noSelect
                         />
-                        {pick?.length > 0 && !noDisplay && (
+                        {pick?.length > 0 && (
                             <tfoot>
                                 <tr>
                                     <td className="pt-3" colSpan={allProps?.length + 2}>
@@ -219,16 +239,6 @@ export const Table = ({
                         <div className="d-flex justify-content-center m-2">No Record</div>
                     )}
                 </div>
-                {/* <RadioTable
-                    setConfirmDelete={setConfirmDelete}
-                    setItemToDelete={setItemToDelete}
-                    setEditPayload={setEditPayload}
-                    setShowEdit={setShowEdit}
-                    loadRadios={loadRadios}
-                    handlePageChange={handlePageChange}
-                    currentPage={currentPage}
-                    rowsPerPage={rowPerPage}
-                /> */}
             </div>
         </div>
     )

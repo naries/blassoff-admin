@@ -48,7 +48,7 @@ const PodcastsTable = ({ podcasts, fetchDashboardData, dashboardData, dateState 
   return (
     <div className="">
       <span className="chart-title">
-        TOP PERFORMING PODCAST BY UNIQUE LISTENERS
+        USER AUDIT LOGS
       </span>
 
       <div style={{ width: "100%", overflow: "scroll" }} className="mt-3">
@@ -57,28 +57,16 @@ const PodcastsTable = ({ podcasts, fetchDashboardData, dashboardData, dateState 
             <Tr>
               <Th scope="col">S/N</Th>
               <Th className="text-left" scope="col">
-                Podcast
+                Audit Title
               </Th>
               <Th className="text-left" scope="col">
-                Episodes
+                Audit Message
               </Th>
               <Th className="text-left" scope="col">
-                Listening Minutes
+                Audit Date
               </Th>
               <Th className="text-left" scope="col">
-                Unique Listening Minutes
-              </Th>
-              <Th className="text-left" scope="col">
-                Unique Listeners
-              </Th>
-              <Th className="text-left" scope="col">
-                Subscribers
-              </Th>
-              <Th className="text-left" scope="col">
-                Comments
-              </Th>
-              <Th className="text-left" scope="col">
-                Downloads
+                Audit User
               </Th>
               {/* <Th className="text-left" scope="col">
                 Action
@@ -105,19 +93,6 @@ const PodcastsTable = ({ podcasts, fetchDashboardData, dashboardData, dateState 
                       </Td>
                       <Td className="align-middle episode-duration">
                         {millisToMinutesAndSeconds(pod.uniquelistening)}
-                      </Td>
-                      <Td className="align-middle episode-visibility">
-                        <span>{round(pod.uniqueListeners)}</span>
-                      </Td>
-
-                      <Td className="align-middle episode-published">
-                        {pod.subscribers}
-                      </Td>
-                      <Td className="align-middle episode-published">
-                        {pod.comments}
-                      </Td>
-                      <Td className="align-middle episode-published">
-                        {pod.downloads}
                       </Td>
                       {/* <Td className="align-middle episode-published">
                         <img src={ActionIcon} alt="action icn" />

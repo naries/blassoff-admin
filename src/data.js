@@ -16,11 +16,11 @@ import Comment from './assets/svg/comment.svg'
 import UserCheck from './assets/svg/user-check.svg'
 
 export const menu = [
-  // {
-  //   label: "Dashboard",
-  //   icon: Dashboard,
-  //   route: "/dashboard",
-  // },
+  {
+    label: "Dashboard",
+    icon: Dashboard,
+    route: "/dashboard",
+  },
   // {
   //   label: "Creators ",
   //   icon: Users, // change Icon later
@@ -64,7 +64,7 @@ export const menu = [
   {
     label: "Payments",
     icon: Episode,
-    route: "/payment",
+    route: "/payments",
   },
   {
     label: "Contents",

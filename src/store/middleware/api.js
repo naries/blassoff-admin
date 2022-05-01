@@ -15,8 +15,11 @@ const getBaseUrl = (reqType) => {
     case "customer":
       baseURL += 'customer/'
       break;
+    case 'payment':
+      baseURL += '/'
+      break;
     default:
-      baseURL = 'user/';
+      baseURL += '';
       break;
   }
   return baseURL;

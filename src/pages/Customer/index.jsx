@@ -11,6 +11,7 @@ import { deactivate, getUser, getUsers, resetCreation, resetActivateDeactivate, 
 import customers, { getCustomer, getCustomerBySearch, getCustomers, resetCustomerBySearch, resetData } from "../../store/customers"
 import UpdatePassword from "./UpdatePassword";
 import AddRole from "./AddRole";
+import { CashoutModal } from "./CashoutModal";
 
 // Props on table
 const allProps = [
@@ -60,6 +61,7 @@ const Customers = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState();
   const [search, setSearch] = useState("");
+  const [viewCashoutModal, setViewCashoutModal] = useState(false);
 
   const { loading, fetchData, changing, changeSuccess, changeFailed } = customersData;
   console.log(customersData);
@@ -151,6 +153,14 @@ const Customers = () => {
         setShowEdit(true)
       }
     },
+    {
+      name: 'Cashouts',
+      type: 'text',
+      fn: d => {
+        setEditPayload(d)
+        setViewCashoutModal(true)
+      }
+    },
     // {
     //   type: 'status',
     //   prop: 'isActive',
@@ -225,6 +235,15 @@ const Customers = () => {
           showEdit={showEdit}
           setShowEdit={setShowEdit}
           editPayload={editPayload}
+          load={load}
+        />
+      )}
+
+      {viewCashoutModal && (
+        <CashoutModal
+          showCashoutModal={viewCashoutModal}
+          setShowCashoutModal={setViewCashoutModal}
+          payload={editPayload}
           load={load}
         />
       )}

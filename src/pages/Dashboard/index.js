@@ -60,14 +60,14 @@ export default function Dashboard() {
       <div className="dashboard--top">
         <div>{generateGreetings()} {user?.firstname}</div>
         <div className="listener-activities-date-range-picker">
-          <DateRangePicker
+          {/* <DateRangePicker
             initialSettings={{
               startDate: dateState?.start.toDate(),
               endDate: dateState?.end.toDate()
             }}
             onCallback={handleCallback}>
             <input type="text" className="form-control" />
-          </DateRangePicker>
+          </DateRangePicker> */}
         </div>
       </div>
       <div className="listener-activities-date-range-picker">
@@ -83,9 +83,9 @@ export default function Dashboard() {
           </div> */}
           <div className="d-card-container mt-2">
             <GridItem
-              title="Creators"
-              value={fetchData?.totalCreatorUsers?.toLocaleString('en-us')}
-              loading={loading}
+              title="Total Users"
+              // value={fetchData?.totalCreatorUsers?.toLocaleString('en-us')}
+              value={10}
               icon={Download}
               className=""
               handleClick={() => setShowDownloadsDialog(true)}
@@ -93,28 +93,28 @@ export default function Dashboard() {
 
 
             <GridItem
-              title="Total podcasts"
-              value={fetchData?.totalPodcasts?.toLocaleString('en-us')}
-              loading={loading}
+              title="Pending Payouts"
+              // value={fetchData?.totalPodcasts?.toLocaleString('en-us')}
+              value={20}
               icon={Hour}
               className=""
               handleClick={() => setShowListeningDialog(true)}
             />
 
             <GridItem
-              title="Total Episodes"
-              value={fetchData?.totalEpisodes?.toLocaleString('en-us')}
-              loading={loading}
+              title="Total Purchases"
+              // value={fetchData?.totalEpisodes?.toLocaleString('en-us')}
+              value={11}
               icon={Like}
               className=""
               handleClick={() => setShowLikesDialog(true)}
             />
 
             <GridItem
-              title="Listeners"
-              value={fetchData?.totalListenerUsers?.toLocaleString('en-us')}
+              title="Total Questions"
+              // value={fetchData?.totalListenerUsers?.toLocaleString('en-us')}
+              value={4}
               icon={PublishedIcon}
-              loading={loading}
               className=""
               handleClick={() => null}
             />

@@ -88,6 +88,10 @@ export const MainTable = ({
                                         if (p.type === 'text' || p.type === "longText") {
                                             return <td key={i} className={p.type === "longText" ? "long-text" : ""}>{p.prepend || ""} {d[p?.prop]} {p.append || ""}</td>
                                         }
+                                        
+                                        if (p.type === 'fn') {
+                                            return <td key={i} className="long-text">{p.outputFn(d[p?.prop])}</td>
+                                        }
 
                                         if (p.type === 'boolean') {
                                             return <td key={i}>{p.prepend || ""} {d[p?.prop] ? p?.trueValue : p?.falseValue} {p.append || ""}</td>

@@ -12,6 +12,7 @@ const slice = createSlice({
     creating: false,
     updating: false,
     changingPw: false,
+    loadingCashouts: false,
     //success states
     created: false,
     fetched: false,
@@ -27,12 +28,14 @@ const slice = createSlice({
     changeFailed: false,
     updateFailed: false,
     changePwFailed: false,
+    fetchCashoutsFailed: false,
 
     //data
     createData: null,
     fetchData: null,
     fetchBySearchData: null,
-    fetchOneData: null
+    fetchOneData: null,
+    fetchCashoutsData: false,
   },
   reducers: {
     reset: (customer) => {
@@ -40,21 +43,24 @@ const slice = createSlice({
       customer.loading = false;
       customer.creating = false;
       customer.changing = false;
+      customer.loadingCashouts = false;
 
       //success states
       customer.created = false;
+      customer.changeSuccess = null;
       customer.fetched = false;
 
 
       //failure states
       customer.createFailed = false;
       customer.fetchFailed = false;
+      customer.fetchCashoutsFailed = false;
       customer.changeFailed = false;
 
       //data
       customer.createData = null;
       customer.fetchData = null;
-      customer.changeSuccess = null;
+      customer.fetchCashoutsData = null;
     },
     resetCreate: customer => {
       customer.creating = false;
@@ -81,6 +87,11 @@ const slice = createSlice({
       customer.loadingOne = false;
       customer.fetchOneFailed = false;
       customer.fetchOneData = null;
+    },
+    resetCashouts: customer => {
+      customer.loadingCashouts = false;
+      customer.fetchCashoutsFailed = false;
+      customer.fetchCashoutsData = null;
     },
     resetBySearchCustomer: customer => {
       customer.loading = false;
@@ -139,6 +150,22 @@ const slice = createSlice({
       customer.loadingOne = false;
       customer.fetchOneFailed = true;
       customer.fetchOneData = null;
+    },
+
+    fetchCashoutDetailsLoading: (customer) => {
+      customer.loadingCashouts = true;
+    },
+    //get success
+    fetchCashoutDetailsSuccess: (customer, action) => {
+      customer.loadingCashouts = false;
+      customer.fetchCashoutsData = action.payload.data;
+      customer.fetchCashoutsFailed = false;
+    },
+    //get err
+    fetchCashoutDetailsError: (customer) => {
+      customer.loadingCashouts = false;
+      customer.fetchCashoutsFailed = true;
+      customer.fetchCashoutsData = null;
     },
     changeCustomerStatusLoading: (customer) => {
       customer.changing = true;
@@ -214,6 +241,9 @@ const {
   fetchOneCustomerLoading,
   fetchOneCustomerSuccess,
   fetchOneCustomerError,
+  fetchCashoutDetailsLoading,
+  fetchCashoutDetailsSuccess,
+  fetchCashoutDetailsError,
   updateCustomerStatusLoading,
   updateCustomerStatusSuccess,
   updateCustomerStatusError,
@@ -258,9 +288,9 @@ export const getCustomer = (value) => (dispatch) => {
       url,
       method: "get",
       type: "customer",
-      onStart:  fetchCustomersLoading.type,
-      onSuccess:  fetchCustomersSuccess.type,
-      onError:  fetchCustomersError.type,
+      onStart: fetchCustomersLoading.type,
+      onSuccess: fetchCustomersSuccess.type,
+      onError: fetchCustomersError.type,
     })
   );
 };
@@ -272,9 +302,23 @@ export const getOneCustomer = (value) => (dispatch) => {
       url,
       method: "get",
       type: "customer",
-      onStart:  fetchOneCustomerLoading.type,
-      onSuccess:  fetchOneCustomerSuccess.type,
-      onError:  fetchOneCustomerError.type,
+      onStart: fetchOneCustomerLoading.type,
+      onSuccess: fetchOneCustomerSuccess.type,
+      onError: fetchOneCustomerError.type,
+    })
+  );
+};
+
+export const getCashoutDetails = (value) => (dispatch) => {
+  let url = `/cashouts?userId=${value.id}`
+  dispatch(
+    apiCallBegan({
+      url,
+      method: "get",
+      type: "customer",
+      onStart: fetchCashoutDetailsLoading.type,
+      onSuccess: fetchCashoutDetailsSuccess.type,
+      onError: fetchCashoutDetailsError.type,
     })
   );
 };
@@ -330,9 +374,9 @@ export const update = (value) => (dispatch) => {
       method: "post",
       type: "customer",
       data: value.data,
-      onStart:  updateCustomerStatusLoading.type,
-      onSuccess:  updateCustomerStatusSuccess.type,
-      onError:  updateCustomerStatusError.type,
+      onStart: updateCustomerStatusLoading.type,
+      onSuccess: updateCustomerStatusSuccess.type,
+      onError: updateCustomerStatusError.type,
     })
   );
 };
@@ -366,5 +410,6 @@ export const getCustomers = createSelector(
   (state) => state.entities.customers,
   (customers) => customers
 );
+
 
 export default slice.reducer;
