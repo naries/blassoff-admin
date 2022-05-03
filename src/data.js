@@ -70,6 +70,13 @@ export const menu = [
     label: "Contents",
     icon: Comment,
     route: "/contents",
+    submenu: [{
+      label: "Live Rounds",
+      route: "/contents/live-rounds"
+    }, {
+      label: "Free Rounds",
+      route: "/contents/free-rounds"
+    }]
   },
   {
     label: "Notifications",

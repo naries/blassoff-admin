@@ -18,24 +18,11 @@ import {
 import { Route, Switch, Redirect } from "react-router-dom";
 import AuthRoute from "./components/AuthRoute";
 import { Login } from "./pages/Landing/Login";
-// import { Signup } from "./pages/Landing/Signup";
-// import LockedAccount from "./pages/Landing/LockedAccount";
-// import { ForgotPassword } from "./pages/Landing/ForgotPassword";
-// import Podcasts from "./pages/Podcasts";
-// import { NewEpisode } from "./pages/Episodes/New";
-// import Sections from "./pages/Sections";
-// import Banners from "./pages/Banners";
-// import { TermsAndConditions } from "./pages/Landing/TermsAndConditions";
-// import OnlineRadio from "./pages/Radio";
-// import Creators from "./pages/Creators";
-// import Notification from "./pages/Notification";
-// import FlaggedPodcasts from "./pages/FlaggedPodcasts";
-// import FlaggedEpisodes from "./pages/FlaggedEpisodes";
-// import Comments from "./pages/Comments";
-// import Listeners from "./pages/Listeners";
 import Users from "./pages/Users";
 import Customers from "./pages/Customer";
 import Payments from "./pages/Payments";
+import FreeContent from "./pages/Content/free";
+import LiveContent from "./pages/Content/live";
 
 function App() {
   return (
@@ -45,6 +32,8 @@ function App() {
       <AuthRoute exact path="/users" render={() => <Users />} />
       <AuthRoute exact path="/customers" render={() => <Customers />} />
       <AuthRoute exact path="/payments" render={() => <Payments />} />
+      <AuthRoute exact path="/contents/free-rounds" render={() => <FreeContent />} />
+      <AuthRoute exact path="/contents/live-rounds" render={() => <LiveContent />} />
       <AuthRoute exact path="/dashboard" render={() => <Dashboard />} />
       <AuthRoute path="/not-found" component={NotFound} />
       <Redirect to="/not-found" />

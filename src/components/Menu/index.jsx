@@ -8,11 +8,11 @@ import './style.css';
 
 const Menu = ({ data }) => {
     const { label, route, icon, submenu } = data;
-    const [subMenu, setSubMenu] = useState(false)
+    const [subMenu, setSubMenu] = useState(false);
     let location = useLocation();
 
     return (
-        isEmpty(submenu) ? (
+        !submenu ? (
             <Link
                 to={route}
                 className="menu-item"
@@ -29,7 +29,7 @@ const Menu = ({ data }) => {
         ) : (
             <div className="mb-2">
                 <div
-                    className="menu-item sidebar"
+                    className="menu-item"
                     onClick={() => setSubMenu(!subMenu)}
                 >
                     <div className="menu p-3">

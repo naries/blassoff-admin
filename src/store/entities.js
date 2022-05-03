@@ -5,6 +5,7 @@ import roles from './roles'
 import customers from './customers'
 import dashboard from './dashboard'
 import payments from './payments'
+import content from './content'
 
 export default combineReducers({
   auth,
@@ -12,5 +13,6 @@ export default combineReducers({
   roles,
   customers,
   dashboard,
-  payments
+  payments,
+  content
 });
