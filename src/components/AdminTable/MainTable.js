@@ -57,7 +57,7 @@ export const MainTable = ({
                 {loading ?
                     Array(rowsPerPage).fill(1).map((p, i) => <tr>
                         <td key={i} colSpan={colSpan} className="text-center">
-                            <Skeleton height={25} className="m-1" count={pageSize} />
+                            <Skeleton count={pageSize} />
                         </td>
                     </tr>
                     ) : (
@@ -88,7 +88,7 @@ export const MainTable = ({
                                         if (p.type === 'text' || p.type === "longText") {
                                             return <td key={i} className={p.type === "longText" ? "long-text" : ""}>{p.prepend || ""} {d[p?.prop]} {p.append || ""}</td>
                                         }
-                                        
+
                                         if (p.type === 'fn') {
                                             return <td key={i} className="long-text">{p.outputFn(d[p?.prop])}</td>
                                         }
@@ -104,7 +104,7 @@ export const MainTable = ({
                                         }
 
                                         if (p.type === "concat") {
-                                            if (!p.props) return <td key={i}>{p.nests.map(n => `${d[n] ? d[n] : d[n] === 0 ? "0": ""} `)}</td>
+                                            if (!p.props) return <td key={i}>{p.nests.map(n => `${d[n] ? d[n] : d[n] === 0 ? "0" : ""} `)}</td>
                                             if (p.nests) {
                                                 return <td key={i}>{p.nests.map(n => `${d[p?.prop][n] ? d[p?.prop][n] : ""} `)}</td>
                                             }
