@@ -4,38 +4,52 @@ import Download from "../../assets/svg/2.svg";
 import Hour from "../../assets/svg/1.svg";
 import Like from "../../assets/svg/3.svg";
 import PublishedIcon from "../../assets/svg/4.svg";
-import { getDashboardInfo, getDashboardSelector } from "../../store/dashboard";
+import { getDashboardInfo, getDashboardSelector, getDashboardStats } from "../../store/dashboard";
 import { useDispatch, useSelector } from "react-redux";
 import { GridItem } from "./GridItem";
-import PodcastsTable from "./PodcastsTable";
 import { loadState } from "../../helpers/local_storage";
 import "./style.css";
-import { getPodCasts } from "../../store/podcast";
-import { getAuthDetails } from "../../store/auth";
 import { generateGreetings } from '../../helpers/Greetings'
-import DateRangePicker from "react-bootstrap-daterangepicker";
 import moment from "moment";
-import { formatDate } from "../../helpers/date";
+import { Table } from "../../components/AdminTable";
 
+// Props on table
+const allProps = [
+  {
+    name: 'Title',
+    type: 'text',
+    prop: 'title'
+  },
+  {
+    name: 'Email',
+    type: 'text',
+    prop: 'email'
+  },
+  {
+    name: 'Message',
+    type: 'text',
+    prop: 'message'
+  },
+  // {
+  //   name: 'Date',
+  //   type: 'date',
+  //   prop: 'dateCreated'
+  // },
+]
 
 export default function Dashboard() {
   const userId = loadState() && loadState().userId;
-  const [showFollowingsDialog, setShowFollowingsDialog] = useState(false);
-  const [showListeningDialog, setShowListeningDialog] = useState(false);
-  const [showDownloadsDialog, setShowDownloadsDialog] = useState(false);
-  const [showLikesDialog, setShowLikesDialog] = useState(false);
-  const podcasts = useSelector(getPodCasts);
   const dispatch = useDispatch();
   const dashboardData = useSelector(getDashboardSelector);
-  const { fetchData, loading } = dashboardData;
-  const auth = useSelector(getAuthDetails);
+  const { fetchData, fetchStatsData, loadingStats, loading } = dashboardData;
+  const [search, setSearch] = useState();
 
   const [dateState, setDateState] = useState({
     start: moment().subtract(6, 'months'),
     end: moment(),
   });
 
-  const pageSize = 10;
+  console.log(dashboardData);
 
   const user = loadState() && loadState().user;
 
@@ -43,14 +57,15 @@ export default function Dashboard() {
     setDateState({ start, end })
   }
 
-  const fetchDashboardData = (rows = 10, offset = 0) => {
+  const load = (rows = 10, offset = 0) => {
     dispatch(
       getDashboardInfo({
-        startDate: formatDate(dateState?.start),
-        endDate: formatDate(dateState?.end),
-        rows,
+        limit: rows,
         offset
       })
+    );
+    dispatch(
+      getDashboardStats()
     );
   };
 
@@ -85,38 +100,42 @@ export default function Dashboard() {
             <GridItem
               title="Total Users"
               // value={fetchData?.totalCreatorUsers?.toLocaleString('en-us')}
-              value={10}
+              value={fetchStatsData?.totalUsers}
               icon={Download}
               className=""
-              handleClick={() => setShowDownloadsDialog(true)}
             />
 
 
             <GridItem
               title="Pending Payouts"
               // value={fetchData?.totalPodcasts?.toLocaleString('en-us')}
-              value={20}
+              value={fetchStatsData?.pendingPayouts}
               icon={Hour}
               className=""
-              handleClick={() => setShowListeningDialog(true)}
             />
 
             <GridItem
-              title="Total Purchases"
+              title="Total Orders"
               // value={fetchData?.totalEpisodes?.toLocaleString('en-us')}
-              value={11}
+              value={fetchStatsData?.totalOrders}
               icon={Like}
               className=""
-              handleClick={() => setShowLikesDialog(true)}
             />
 
             <GridItem
-              title="Total Questions"
+              title="Live Questions"
               // value={fetchData?.totalListenerUsers?.toLocaleString('en-us')}
-              value={4}
+              value={fetchStatsData?.liveQuestions}
               icon={PublishedIcon}
               className=""
-              handleClick={() => null}
+            />
+
+            <GridItem
+              title="Free Questions"
+              // value={fetchData?.totalListenerUsers?.toLocaleString('en-us')}
+              value={fetchStatsData?.freeQuestions}
+              icon={PublishedIcon}
+              className=""
             />
 
           </div>
@@ -125,14 +144,22 @@ export default function Dashboard() {
         <div className="mt-4 pb-5">
           <Row style={{ gap: "1.5rem" }}>
             <Col xs={12}>
-              <div className="card p-3">
+              <div className="card">
                 <Row>
                   <Col xs={12}>
-                    <PodcastsTable
-                      podcasts={fetchData?.podcasts}
-                      fetchDashboardData={fetchDashboardData}
-                      dashboardData={dashboardData}
-                      dateState={dateState}
+                    <Table
+                      noDisplay
+                      noSelect
+                      disableDownload
+                      selector={fetchData}
+                      load={load}
+                      loading={loading}
+                      allProps={allProps}
+                      pick={fetchData?.model}
+                      tableName="Audit"
+                      totalCounts={fetchData?.totalCount || fetchData?.model?.length}
+                      searchString={search}
+                      setSearchString={setSearch}
                     />
                   </Col>
                 </Row>

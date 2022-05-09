@@ -9,6 +9,10 @@ const slice = createSlice({
     fetched: false,
     fetchFailed: false,
     fetchData: null,
+
+    loadingStats: false,
+    fetchFailedStats: false,
+    fetchStatsData: null,
   },
   reducers: {
     reset: (dashboardInfo) => {
@@ -16,6 +20,10 @@ const slice = createSlice({
       dashboardInfo.fetched = false;
       dashboardInfo.fetchFailed = false;
       dashboardInfo.fetchData = null;
+      
+      dashboardInfo.loadingStats = false;
+      dashboardInfo.fetchStatsFailed = false;
+      dashboardInfo.fetchStatsData = null;
     },
     //get request
     fetchDashboardInfoLoading: (dashboardInfo) => {
@@ -24,7 +32,7 @@ const slice = createSlice({
     //get success
     fetchDashboardInfoSuccess: (dashboardInfo, action) => {
       dashboardInfo.loading = false;
-      dashboardInfo.fetchData = action.payload;
+      dashboardInfo.fetchData = action.payload.data;
       dashboardInfo.fetchFailed = false;
     },
     //get err
@@ -33,6 +41,23 @@ const slice = createSlice({
       dashboardInfo.fetchFailed = true;
       dashboardInfo.fetchData = null;
     },
+    
+    //get Statistics
+    fetchDashboardStatsLoading: (dashboardInfo) => {
+      dashboardInfo.loadingStats = true;
+    },
+    //get success
+    fetchDashboardStatsSuccess: (dashboardInfo, action) => {
+      dashboardInfo.loadingStats = false;
+      dashboardInfo.fetchStatsData = action.payload.data;
+      dashboardInfo.fetchStatsFailed = false;
+    },
+    //get err
+    fetchDashboardStatsError: (dashboardInfo) => {
+      dashboardInfo.loadingStats = false;
+      dashboardInfo.fetchStatsFailed = true;
+      dashboardInfo.fetchStatsData = null;
+    },
   },
 });
 
@@ -40,6 +65,9 @@ const {
   fetchDashboardInfoLoading,
   fetchDashboardInfoSuccess,
   fetchDashboardInfoError,
+  fetchDashboardStatsLoading,
+  fetchDashboardStatsSuccess,
+  fetchDashboardStatsError,
   reset,
 } = slice.actions;
 
@@ -48,12 +76,25 @@ const {
 export const getDashboardInfo = (value) => (dispatch) => {
   dispatch(
     apiCallBegan({
-      url: `/users/admin/dashboard?startDate=${value?.startDate}&endDate=${value?.endDate}&offset=${value?.offset}&limit=${value?.rows}`,
+      url: `?offset=${value?.offset}&limit=${value?.limit}`,
       method: "get",
-      type: "user",
+      type: "audit",
       onStart: fetchDashboardInfoLoading.type,
       onSuccess: fetchDashboardInfoSuccess.type,
       onError: fetchDashboardInfoError.type,
+    })
+  );
+};
+
+export const getDashboardStats = () => (dispatch) => {
+  dispatch(
+    apiCallBegan({
+      url: `/dashboard`,
+      method: "get",
+      type: "",
+      onStart: fetchDashboardStatsLoading.type,
+      onSuccess: fetchDashboardStatsSuccess.type,
+      onError: fetchDashboardStatsError.type,
     })
   );
 };

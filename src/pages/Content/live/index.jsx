@@ -78,6 +78,7 @@ const LiveContent = () => {
       <Table
         noSelect
         disableDownload
+        extraHeaders={addButton}
         selector={liveDataContent}
         load={load}
         loading={loadingLive}

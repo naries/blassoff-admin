@@ -78,6 +78,7 @@ const FreeContent = () => {
       <Table
         noSelect
         disableDownload
+        extraHeaders={addButton}
         selector={freeDataContent}
         load={load}
         loading={loadingFree}

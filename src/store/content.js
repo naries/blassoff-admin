@@ -7,34 +7,42 @@ const slice = createSlice({
     initialState: {
         loadingFree: false,
         loadingLive: false,
+        loadingCategories: false,
         updatingFree: false,
 
         fetchedFree: false,
         fetchedLive: false,
+        fetchedCategories: false,
         updateFreeSuccess: false,
         updateLiveSuccess: false,
 
         fetchFreeFailed: false,
         fetchLiveFailed: false,
+        fetchCategoriesFailed: false,
         updateFreeFailed: false,
         updateLiveFailed: false,
 
         freeData: null,
         liveData: null,
+        categories: null
     },
     reducers: {
         reset: content => {
             content.loadingFree = false;
             content.loadingLive = false;
+            content.loadingCategories = false;
 
             content.fetchedFree = false;
             content.fetchedLive = false;
+            content.fetchedCategories = false;
 
             content.fetchFreeFailed = false;
             content.fetchLiveFailed = false;
+            content.fetchLiveCategories = false;
 
             content.freeData = null;
             content.liveData = null;
+            content.categories = null;
         },
         resetUpdate: user => {
             user.updatingFree = false;
@@ -98,6 +106,24 @@ const slice = createSlice({
             content.liveData = null
         },
 
+        fetchCategoriesLoading: content => {
+            content.loadingCategories = true;
+        },
+
+        fetchCategoriesSuccess: (content, action) => {
+            content.loadingCategories = false;
+            content.fetchedCategories = true;
+            content.fetchCategoriesFailed = false;
+            content.categories = action.payload.data
+        },
+
+        fetchCategoriesFailure: content => {
+            content.loadingCategories = false;
+            content.fetchCategoriesFailed = true;
+            content.fetchedCategories = false;
+            content.categories = null
+        },
+
         updateLiveStatusLoading: (content) => {
             content.updatingLive = true;
         },
@@ -126,6 +152,9 @@ const {
     fetchLiveLoading,
     fetchLiveSuccess,
     fetchLiveFailure,
+    fetchCategoriesLoading,
+    fetchCategoriesSuccess,
+    fetchCategoriesFailure,
     updateLiveStatusLoading,
     updateLiveStatusSuccess,
     updateLiveStatusFailed,
@@ -169,6 +198,19 @@ export const getLiveContents = (value) => (dispatch) => {
             onStart: fetchLiveLoading.type,
             onSuccess: fetchLiveSuccess.type,
             onError: fetchLiveFailure.type,
+        })
+    );
+};
+
+export const getCategories = (value) => (dispatch) => {
+    dispatch(
+        apiCallBegan({
+            url: `/categories`,
+            method: "get",
+            type: "content",
+            onStart: fetchCategoriesLoading.type,
+            onSuccess: fetchCategoriesSuccess.type,
+            onError: fetchCategoriesFailure.type,
         })
     );
 };

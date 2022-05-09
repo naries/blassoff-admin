@@ -133,7 +133,7 @@ export const Table = ({
 
 
     return (
-        <div className="py-4 content">
+        <div className="content">
             <div className="d-flex flex-row flex-wrap justify-content-between">
                 <div className="py-4">
                     {!noDisplay && <>
@@ -143,6 +143,7 @@ export const Table = ({
                             type="number"
                             style={{ width: 50, padding: 6, borderRadius: 4 }}
                             // value={rowsPerPage}
+                            placeholder={5}
                             step={5}
                             onChange={e => {
                                 clearTimeout(displayTypingTimer);
@@ -192,7 +193,7 @@ export const Table = ({
                     <table className="table-responsiveness dashboard-pod-table table table-striped">
                         <MainTable
                             allProps={allProps}
-                            data={manual ? pick.slice(rowsPerPage * (currentPage - 1) + 1, parseInt(rowsPerPage * (currentPage - 1)) +
+                            data={manual ? pick && pick?.slice(rowsPerPage * (currentPage - 1) + 1, parseInt(rowsPerPage * (currentPage - 1)) +
                                 parseInt(totalCounts < rowsPerPage ? totalCounts : rowsPerPage)) : pick}
                             colSpan={allProps?.length + 2}
                             loading={loading}

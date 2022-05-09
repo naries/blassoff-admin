@@ -21,6 +21,9 @@ const getBaseUrl = (reqType) => {
     case 'content':
       baseURL += 'contents/'
       break;
+    case 'audit':
+      baseURL += 'getaudit/'
+      break;
     default:
       baseURL += '';
       break;

@@ -16,38 +16,35 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getrole, getroleDetails } from "../../../store/roles";
 import { createUsers, getUsers, resetCreation, resetData } from "../../../store/users";
+import { contents, getCategories, resetUpdateData } from "../../../store/content";
 
 
 const animatedComponents = makeAnimated();
 
-export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progressValue, setProgressValue }) {
+export default function Add({ showAdd, setShowAdd, load, popRoleAdd, progressValue, setProgressValue }) {
   const [values, setValue] = useState();
 
   const allRoles = useSelector(getroleDetails);
-  const users = useSelector(getUsers);
-  const [roles, setRoles] = useState([]);
+  const content = useSelector(contents);
 
   //succes and failure
   const [addSuccess, setAddSuccess] = useState(false);
   const [addFailure, setAddFailure] = useState(false);
   const [errors, setErrors] = useState();
-  const [type, setType] = useState(false);
 
 
   const dispatch = useDispatch();
-  const { creating, createData, createFailed } = users;
+  const { creating, createData, createFailed, categories } = content;
 
-  const getAllRoles = () => {
-    dispatch(getrole());
+  console.log(categories)
+
+  const getAllCategories = () => {
+    dispatch(getCategories());
   }
 
-  const reset = () => {
-    dispatch(resetCreation())
-  }
 
   useEffect(() => {
-    getAllRoles()
-    reset()
+    getAllCategories()
   }, [])
 
   useEffect(() => {
@@ -93,36 +90,23 @@ export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progres
   const validateInput = () => {
     dispatch(resetData());
 
-    if (!values?.email) {
-      setErrors({ ...errors, email: "Please enter an email address" });
+    if (!values?.roundType) {
+      setErrors({ ...errors, roundType: "Choose a round type" });
       return false;
     }
 
-    if (!values?.phonenumber) {
-      setErrors({ ...errors, phonenumber: "Please enter a phone number" });
+    if (!values?.round) {
+      setErrors({ ...errors, round: "Choose a round" });
       return false;
     }
 
-    if (!values?.password) {
-      setErrors({ ...errors, password: "Enter a password" });
-      return false;
-    } else {
-      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(values?.password)) {
-        setErrors({ ...errors, password: "Password must contain at least 1 uppercase, 1 special character and a special character" })
-        return false;
-      }
-    }
-
-    if (!values?.location) {
-      setErrors({ ...errors, artwork: "Please enter a location" });
+    if (!values?.category) {
+      setErrors({ ...errors, category: "Choose a category" });
       return false;
     }
 
-    if (!values?.role_Id) {
-      setErrors({
-        ...errors,
-        role_id: "Please select at least one role",
-      });
+    if (!values?.difficaultyLevel) {
+      setErrors({ ...errors, difficaultyLevel: "Choose a category" });
       return false;
     }
 
@@ -149,7 +133,7 @@ export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progres
     >
       <Modal.Header closeButton className="modal-header" style={{ backgroundColor: '#fff', color: 'Black', fontSize: '24px!important' }}>
         <Modal.Title id="contained-modal-title-vcenter">
-          <Container>Create User</Container>
+          <Container>Upload Questions</Container>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -183,36 +167,67 @@ export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progres
                       <Row>
                         <Col xs={12}>
                           <div className="form-group">
-                            <label className="pod-label">Email</label>
+                            <label className="pod-label">Round Type<span style={{ color: "red" }}>*</span></label>
+                            <select className="form-control pod-input" value={values?.roundType}>
+                              <option value="">Please select a round type</option>
+                              <option value="normal">Normal Round</option>
+                              <option value="special">Special Round</option>
+                            </select>
+                            {errors?.roundType && (
+                              <div className="text-danger px-3">
+                                {errors?.roundType}
+                              </div>
+                            )}
+                          </div>
+                        </Col>
+                        <Col xs={12}>
+                          <div className="form-group">
+                            <label className="pod-label">Select Round<span style={{ color: "red" }}>*</span></label>
+                            <select className="form-control pod-input" values={values?.round}>
+                              <option value="">Please select a round</option>
+                              <option value="round_one">Round One</option>
+                              <option value="round_two">Round Two</option>
+                              <option value="round_three">Round Three</option>
+                              <option value="round_four">Round Four</option>
+                              <option value="round_five">Round Five</option>
+                            </select>
+                            {errors?.round && (
+                              <div className="text-danger px-3">
+                                {errors?.round}
+                              </div>
+                            )}
+                          </div>
+                        </Col>
+                        <Col xs={12}>
+                          <div className="form-group">
+                            <label className="pod-label">Select Difficulty level<span style={{ color: "red" }}>*</span></label>
+                            <select className="form-control pod-input" value={values?.difficaultyLevel}>
+                              <option value="">Choose a category</option>
+                              <option value="easy">Easy</option>
+                              <option value="normal">Normal</option>
+                              <option value="hard">Hard</option>
+                              <option value="very hard">Very Hard</option>
+                            </select>
+                            {errors?.difficaultyLevel && (
+                              <div className="text-danger px-3">
+                                {errors?.difficaultyLevel}
+                              </div>
+                            )}
+                          </div>
+                        </Col>
+                        <Col xs={12}>
+                          <div className="form-group">
+                            <label className="pod-label">Select File<span style={{ color: "red" }}>*</span></label>
                             <input
-                              name="email"
-                              type="text"
+                              name="file"
+                              type="file"
                               className="form-control pod-input"
-                              placeholder="Email"
                               onChange={(e) => handleValue(e)}
-                              value={values?.email}
+                              value={values?.file}
                             />
-                            {errors?.email && (
+                            {errors?.file && (
                               <div className="text-danger px-3">
-                                {errors?.email}
-                              </div>
-                            )}
-                          </div>
-                        </Col>
-                        <Col xs={12}>
-                          <div className="form-group">
-                            <label className="pod-label">Phone Number</label>
-                            <input
-                              name="phonenumber"
-                              type="text"
-                              className="form-control pod-input"
-                              placeholder="Phone Number"
-                              onChange={(e) => handleValue(e)}
-                              value={values?.phonenumber}
-                            />
-                            {errors?.phonenumber && (
-                              <div className="text-danger px-3">
-                                {errors?.phonenumber}
+                                {errors?.file}
                               </div>
                             )}
                           </div>
@@ -220,89 +235,18 @@ export default function AddUser({ showAdd, setShowAdd, load, popRoleAdd, progres
 
                         <Col xs={12}>
                           <div className="form-group">
-                            <label className="pod-label">Password</label>
-                            <div style={{ position: "relative" }}>
-                              <input
-                                name="password"
-                                type={!type ? "password" : "text"}
-                                className="form-control pod-input"
-                                placeholder="password"
-                                onChange={(e) => handleValue(e)}
-                                value={values?.password}
-                                required
-                              />
-                              <FontAwesomeIcon
-                                icon={!type ? faEye : faEyeSlash}
-                                size="sm"
-                                style={{
-                                  position: "absolute",
-                                  top: 15,
-                                  right: 10,
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => setType(!type)}
-                              />
-                            </div>
-                            {errors?.password && (
+                            <label className="pod-label">Select Category<span style={{ color: "red" }}>*</span></label>
+                            <select className="form-control pod-input" value={values?.category}>
+                              <option value="">Choose a category</option>
+                              {categories?.map((c, i) => {
+                                return <option key={i} value={c?.id}>{c?.name}</option>
+                              })}
+                            </select>
+                            {errors?.category && (
                               <div className="text-danger px-3">
-                                {errors?.password}
+                                {errors?.category}
                               </div>
                             )}
-                          </div>
-
-                        </Col>
-                        <Col xs={12}>
-                          <div className="form-group">
-                            <label className="pod-label">Location</label>
-                            <input
-                              name="location"
-                              type="text"
-                              className="form-control pod-input"
-                              placeholder="Location"
-                              onChange={(e) => handleValue(e)}
-                              value={values?.location}
-                            />
-                            {errors?.location && (
-                              <div className="text-danger px-3">
-                                {errors?.location}
-                              </div>
-                            )}
-                          </div>
-                        </Col>
-                        <Col xs={12}>
-                          <div className="form-group">
-                            <label className="pod-label">Roles</label>
-                            <Select
-                              closeMenuOnSelect={false}
-                              components={animatedComponents}
-                              isMulti
-                              options={roles}
-                              defaultValue={values?.role_Id}
-                              value={values?.role_Id}
-                              onChange={(value) => {
-                                setValue({
-                                  ...values,
-                                  role_Id: value,
-                                });
-                              }}
-                            />
-
-                            {errors?.role_Id && (
-                              <div className="text-danger px-3">
-                                {errors?.role_Id}
-                              </div>
-                            )}
-                            <div className="text-right">
-                              <Button className="btn btn-small" variant="link" onClick={() => {
-                                setProgressValue(values);
-                                popRoleAdd()
-                              }}>
-                                <span className="button-label">
-                                  + Create Role
-                                </span>
-                              </Button>
-                            </div>
-
                           </div>
                         </Col>
                       </Row>
