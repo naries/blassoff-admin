@@ -52,17 +52,17 @@ export const menu = [
   //   route: "/flagged-episodes",
   // },
   {
-    label: "Users",
+    label: "Admins",
     icon: UserCheck, // change Icon later
     route: "/users",
   },
   {
-    label: "Customers",
+    label: "Users",
     icon: UserCheck, // change Icon later
     route: "/customers",
   },
   {
-    label: "Payments",
+    label: "Purchases",
     icon: Episode,
     route: "/payments",
   },
@@ -78,11 +78,11 @@ export const menu = [
       route: "/contents/free-rounds"
     }]
   },
-  {
-    label: "Notifications",
-    icon: Bell,
-    route: "/notifications",
-  },
+  // {
+  //   label: "Notifications",
+  //   icon: Bell,
+  //   route: "/notifications",
+  // },
   // {
   //   label: "Banners",
   //   icon: Settings,

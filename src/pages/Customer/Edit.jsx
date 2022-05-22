@@ -487,11 +487,11 @@ export default function EditCustomer({ showEdit, setShowEdit, load, editPayload 
                                 className="form-control pod-input"
                                 placeholder="Last name"
                                 onChange={(e) => handleValue(e)}
-                                value={values?.rounds}
+                                value={values?.points}
                               />
-                              {errors?.rounds && (
+                              {errors?.points && (
                                 <div className="text-danger px-3">
-                                  {errors?.rounds}
+                                  {errors?.points}
                                 </div>
                               )}
                             </div>

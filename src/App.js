@@ -1,18 +1,7 @@
 import React from "react";
 import {
   Dashboard,
-  Episodes,
-  Records,
-  ConfirmEmail,
-  Activate,
-  ResetPassword,
-  Verification,
-  ActivateUser,
-  ChangePassword,
-  AccountSettings,
-  BackgroundMusic,
   NotFound,
-  UpdateProfile,
 } from "./pages";
 
 import { Route, Switch, Redirect } from "react-router-dom";

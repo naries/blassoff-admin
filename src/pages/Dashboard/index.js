@@ -12,6 +12,8 @@ import "./style.css";
 import { generateGreetings } from '../../helpers/Greetings'
 import moment from "moment";
 import { Table } from "../../components/AdminTable";
+import { FiUsers } from 'react-icons/fi';
+import { BsCashStack, BsCardText, BsPatchQuestion, BsPatchQuestionFill } from 'react-icons/bs';
 
 // Props on table
 const allProps = [
@@ -30,11 +32,6 @@ const allProps = [
     type: 'text',
     prop: 'message'
   },
-  // {
-  //   name: 'Date',
-  //   type: 'date',
-  //   prop: 'dateCreated'
-  // },
 ]
 
 export default function Dashboard() {
@@ -48,8 +45,6 @@ export default function Dashboard() {
     start: moment().subtract(6, 'months'),
     end: moment(),
   });
-
-  console.log(dashboardData);
 
   const user = loadState() && loadState().user;
 
@@ -75,66 +70,46 @@ export default function Dashboard() {
       <div className="dashboard--top">
         <div>{generateGreetings()} {user?.firstname}</div>
         <div className="listener-activities-date-range-picker">
-          {/* <DateRangePicker
-            initialSettings={{
-              startDate: dateState?.start.toDate(),
-              endDate: dateState?.end.toDate()
-            }}
-            onCallback={handleCallback}>
-            <input type="text" className="form-control" />
-          </DateRangePicker> */}
         </div>
       </div>
       <div className="listener-activities-date-range-picker">
       </div>
       <div className="dashboard--content">
         <div className="d-card-box no-background">
-          {/* <div className="d-card-box--general-stats">
-            <div className="d-card-box--title">General Statistics</div>
-            <div className="d-card-box--count">
-              {(podcasts && podcasts.fetchData && podcasts.fetchData.count) || 0} Podcasts
-            </div>
-            <img src={GeneralStats} alt="general" />
-          </div> */}
           <div className="d-card-container mt-2">
             <GridItem
               title="Total Users"
-              // value={fetchData?.totalCreatorUsers?.toLocaleString('en-us')}
               value={fetchStatsData?.totalUsers}
-              icon={Download}
+              icon={<FiUsers fontSize={30} />}
               className=""
             />
 
 
             <GridItem
               title="Pending Payouts"
-              // value={fetchData?.totalPodcasts?.toLocaleString('en-us')}
               value={fetchStatsData?.pendingPayouts}
-              icon={Hour}
+              icon={<BsCashStack fontSize={30} />}
               className=""
             />
 
             <GridItem
               title="Total Orders"
-              // value={fetchData?.totalEpisodes?.toLocaleString('en-us')}
               value={fetchStatsData?.totalOrders}
-              icon={Like}
+              icon={<BsCardText fontSize={30} />}
               className=""
             />
 
             <GridItem
               title="Live Questions"
-              // value={fetchData?.totalListenerUsers?.toLocaleString('en-us')}
               value={fetchStatsData?.liveQuestions}
-              icon={PublishedIcon}
+              icon={<BsPatchQuestion fontSize={30} />}
               className=""
             />
 
             <GridItem
               title="Free Questions"
-              // value={fetchData?.totalListenerUsers?.toLocaleString('en-us')}
               value={fetchStatsData?.freeQuestions}
-              icon={PublishedIcon}
+              icon={<BsPatchQuestionFill fontSize={30} />}
               className=""
             />
 

@@ -26,8 +26,6 @@ export const Login = (props) => {
     dispatch(resetData());
   }, []);
 
-  console.log(auth);
-
   useEffect(() => {
     if (auth && !isEmpty(details)) {
       if (details && details.token) {

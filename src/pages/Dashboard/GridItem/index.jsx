@@ -12,7 +12,7 @@ export const GridItem = ({
   return (
     <div className={`d-card ${className}`} onClick={handleClick}>
       <div className="d-flex flex-row align-items-center w-100">
-        {icon && <img src={icon} alt="icon" className="mt-1 mr-3" />}
+        <div className="mr-3">{icon}</div>
         <div className="w-100">
           <div className="d-card-title mb-2">{loading ? <Skeleton /> : title}</div>
           <div className="d-card-value">{loading ? <Skeleton /> : value}</div>

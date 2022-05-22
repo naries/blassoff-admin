@@ -8,23 +8,27 @@ const slice = createSlice({
         loadingFree: false,
         loadingLive: false,
         loadingCategories: false,
+        loadingRoundList: false,
         updatingFree: false,
 
         fetchedFree: false,
         fetchedLive: false,
         fetchedCategories: false,
+        fetchedRoundList: false,
         updateFreeSuccess: false,
         updateLiveSuccess: false,
 
         fetchFreeFailed: false,
         fetchLiveFailed: false,
         fetchCategoriesFailed: false,
+        fetchRoundListFailed: false,
         updateFreeFailed: false,
         updateLiveFailed: false,
 
         freeData: null,
         liveData: null,
-        categories: null
+        categories: null,
+        roundList: null,
     },
     reducers: {
         reset: content => {
@@ -38,7 +42,7 @@ const slice = createSlice({
 
             content.fetchFreeFailed = false;
             content.fetchLiveFailed = false;
-            content.fetchLiveCategories = false;
+            content.fetchedLiveCategories = false;
 
             content.freeData = null;
             content.liveData = null;
@@ -124,6 +128,24 @@ const slice = createSlice({
             content.categories = null
         },
 
+        fetchRoundListLoading: content => {
+            content.loadingRoundList = true;
+        },
+
+        fetchRoundListSuccess: (content, action) => {
+            content.loadingRoundList = false;
+            content.fetchedRoundList = true;
+            content.fetchRoundListFailed = false;
+            content.roundList = action.payload.data
+        },
+
+        fetchRoundListFailure: content => {
+            content.loadingRoundList = false;
+            content.fetchRoundListFailed = true;
+            content.fetchedRoundList = false;
+            content.roundList = null
+        },
+
         updateLiveStatusLoading: (content) => {
             content.updatingLive = true;
         },
@@ -155,6 +177,9 @@ const {
     fetchCategoriesLoading,
     fetchCategoriesSuccess,
     fetchCategoriesFailure,
+    fetchRoundListLoading,
+    fetchRoundListSuccess,
+    fetchRoundListFailure,
     updateLiveStatusLoading,
     updateLiveStatusSuccess,
     updateLiveStatusFailed,
@@ -211,6 +236,19 @@ export const getCategories = (value) => (dispatch) => {
             onStart: fetchCategoriesLoading.type,
             onSuccess: fetchCategoriesSuccess.type,
             onError: fetchCategoriesFailure.type,
+        })
+    );
+};
+
+export const getRoundList = (value) => (dispatch) => {
+    dispatch(
+        apiCallBegan({
+            url: `/roundlist`,
+            method: "get",
+            type: "content",
+            onStart: fetchRoundListLoading.type,
+            onSuccess: fetchRoundListSuccess.type,
+            onError: fetchRoundListFailure.type,
         })
     );
 };

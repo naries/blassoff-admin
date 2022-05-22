@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getrole, getroleDetails } from "../../../store/roles";
 import { createUsers, getUsers, resetCreation, resetData } from "../../../store/users";
 import { contents, getCategories, resetUpdateData } from "../../../store/content";
+import { difficultyLevels } from "../misc";
 
 
 const animatedComponents = makeAnimated();
@@ -95,8 +96,8 @@ export default function Add({ showAdd, setShowAdd, load, popRoleAdd, progressVal
       return false;
     }
 
-    if (!values?.difficaultyLevel) {
-      setErrors({ ...errors, difficaultyLevel: "Choose a category" });
+    if (!values?.difficultyLevel) {
+      setErrors({ ...errors, difficultyLevel: "Choose a category" });
       return false;
     }
 
@@ -191,16 +192,16 @@ export default function Add({ showAdd, setShowAdd, load, popRoleAdd, progressVal
                         <Col xs={12}>
                           <div className="form-group">
                             <label className="pod-label">Select Difficulty level<span style={{ color: "red" }}>*</span></label>
-                            <select className="form-control pod-input" value={values?.difficaultyLevel}>
-                              <option value="">Choose a category</option>
-                              <option value="easy">Easy</option>
-                              <option value="normal">Normal</option>
-                              <option value="hard">Hard</option>
-                              <option value="very hard">Very Hard</option>
+                            <select className="form-control pod-input" value={values?.difficultyLevel}>
+                              <option value="">Choose a difficulty level</option>
+                              <option value={difficultyLevels.EASY}>Easy</option>
+                              <option value={difficultyLevels.NORMAL}>Normal</option>
+                              <option value={difficultyLevels.HARD}>Hard</option>
+                              <option value={difficultyLevels.VERY_HARD}>Very Hard</option>
                             </select>
-                            {errors?.difficaultyLevel && (
+                            {errors?.difficultyLevel && (
                               <div className="text-danger px-3">
-                                {errors?.difficaultyLevel}
+                                {errors?.difficultyLevel}
                               </div>
                             )}
                           </div>

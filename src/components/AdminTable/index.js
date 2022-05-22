@@ -8,6 +8,15 @@ import moment from 'moment';
 let typingTimer;
 let displayTypingTimer;
 
+const LONG_TEXT = "longText"
+const TEXT = "text"
+const TEXT_DECORATED = 'text_decorated'
+const DECORATED = 'decorated'
+const ARRAY = "array"
+const CONCAT = "concat"
+const BOOL = 'boolean'
+const DATE = 'date'
+
 export const Table = ({
     extraHeaders,
     allProps,
@@ -39,11 +48,8 @@ export const Table = ({
     }
 
     const getOffSet = () => {
-        if (currentPage > 1) {
-            return (currentPage - 1) * rowsPerPage;
-        } else {
-            return 0;
-        }
+        if (!currentPage) return 0;
+        return (currentPage - 1) * rowsPerPage;
     };
 
     const handlePageChange = (page) => {
@@ -52,6 +58,7 @@ export const Table = ({
 
     const pageCount = Math.ceil(totalCounts / rowsPerPage);
 
+    // refactor later
     const selectRows = (x, k = null) => {
         if (k || k === 0) {
             if (selectedRowsIndex.filter(r => r._id === k._id).length) {
@@ -80,28 +87,28 @@ export const Table = ({
         setSelectedRowsIndex([...newX])
     }
 
-    const composeDownload = (arr, text = "Title") => {
-        let dataToExport = []
-        if (arr?.length) {
-            arr.map(r => {
-                let nObj = {}
-                allProps.map(p => {
-                    if (p.type === 'text' || p.type === "longText" || p.type === "text-decorated" || p.type === "decorated")
-                        nObj[p.name] = r[p.prop];
-                    if (p.type === 'array')
-                        nObj[p.name] = r[p.prop]?.map(x => x[p.nestName]).toString("")
-                    if (p.type === 'concat')
-                        nObj[p.name] = p.nests.map(n => r[p.prop][n]).join(" ")
-                    if (p.type === 'boolean')
-                        nObj[p.name] = r[p.prop] ? 'Yes' : 'No'
-                    if (p.type === 'date')
-                        nObj[p.name] = moment(r[p.prop]).format("MMM, DD YYYY hh:mm a");
-                })
+    function propName(document, prop) {
+        let targetProperty = document[prop.prop];
+        let isTypePlainTextOrDecorated = prop.type === TEXT || prop.type === LONG_TEXT || prop.type === TEXT_DECORATED || prop.type === DECORATED
+        if (!targetProperty) return;
+        if (isTypePlainTextOrDecorated) return targetProperty
+        if (prop.type === ARRAY) return targetProperty?.map(x => x[prop.nestName]).toString("")
+        if (prop.type === CONCAT) return prop.nests.map(n => targetProperty[n]).join(" ")
+        if (prop.type === BOOL) return targetProperty ? 'Yes' : 'No'
+        if (prop.type === DATE) return moment(targetProperty).format("MMM, DD YYYY hh:mm a");
+    }
 
-                dataToExport.push(nObj)
+    const composeDownload = (documentArray) => {
+        if (!documentArray?.length) return;
+        let dataToExport = [];
+        documentArray.map(doc => {
+            let nObj = {};
+            allProps.map(prop => {
+                nObj[prop.name] = propName(doc, prop)
             })
-            exportCSV(JSON.stringify(dataToExport), tableName)
-        }
+            dataToExport.push(nObj)
+        })
+        exportCSV(JSON.stringify(dataToExport), tableName)
     }
 
     // download

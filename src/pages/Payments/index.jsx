@@ -26,6 +26,11 @@ const allProps = [
     type: 'text',
     prop: 'planAmount',
   },
+  {
+    name: 'Date',
+    type: 'date',
+    prop: 'dateCreated',
+  },
 ]
 
 const Payments = () => {
@@ -55,18 +60,6 @@ const Payments = () => {
         tableName="Users"
         totalCounts={data?.totalCount || data?.length}
       />
-      {/* 
-      {confirmDelete && (
-        <ConfirmBox
-          hideConfirm={changing || changeSuccess || changeFailed}
-          showConfirm={confirmDelete}
-          onConfirm={handleConfirm}
-          onCancel={() => setConfirmDelete(false)}
-          confirmTitle={changing ? "Please wait..." : changeSuccess ? "Success" : changeFailed ? "Failed" : "Confirm"}
-          confirmMsg={changing ? "Updating status... Please wait." : changeSuccess ? "Status updated successfully." : changeFailed ? "Something went wrong... Try again" : "Please confirm to continue or press cancel to return"}
-          is_request_processing={changing}
-        />
-      )} */}
     </div>
   );
 };

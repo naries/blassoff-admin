@@ -1,63 +1,63 @@
 .login-container {
-  position: relative;
-  overflow: hidden;
-  min-width: 100%;
-}
-
-.login-container .login-content {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.login-container .login-content .login-content--left {
-  background: rgba(0, 0, 0, 0.3);
-  background-image: url("../../../assets/landing/assets/images/login-bg.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.login-container .login-content .login-content--right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-}
-
-.login-content--login-form {
-  width: 380px;
-  background: #fff;
-  border: 1px solid #f1f4f8;
-  box-sizing: border-box;
-  box-shadow: 0px 3px 20px 3px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  padding: 2rem;
-}
-
-.login-content--login-form .login-content--login-form-title {
-  font-family: MTN Brighter Sans;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 23px;
-  text-align: center;
-  color: #000000;
-}
-
-.login-content--form-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@media (max-width: 768px) {
-  .login-container .login-content .login-content--left {
-    display: none;
+    position: relative;
+    overflow: hidden;
+    min-width: 100%;
   }
-
+  
   .login-container .login-content {
-    grid-template-columns: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-}
+  
+  .login-container .login-content .login-content--left {
+    background: rgba(0, 0, 0, 0.3);
+    background-image: url("../../../assets/landing/assets/images/login-bg.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .login-container .login-content .login-content--right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+  }
+  
+  .login-content--login-form {
+    width: 380px;
+    background: #fff;
+    border: 1px solid #f1f4f8;
+    box-sizing: border-box;
+    box-shadow: 0px 3px 20px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 2rem;
+  }
+  
+  .login-content--login-form .login-content--login-form-title {
+    font-family: MTN Brighter Sans;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+    color: #000000;
+  }
+  
+  .login-content--form-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  @media (max-width: 768px) {
+    .login-container .login-content .login-content--left {
+      display: none;
+    }
+  
+    .login-container .login-content {
+      grid-template-columns: 100%;
+    }
+  }
